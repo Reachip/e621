@@ -9,7 +9,14 @@ A fast e621 image downloader made for fun.
 pip install -r requirements.txt
 ```
 
-# Usage 
+# Usage
+
 ```
-python main.py [categorie] [thread workers]
+python main.py [categorie]
+```
+
+## Example
+
+```
+python main.py hair
 ```
