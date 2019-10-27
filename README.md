@@ -10,6 +10,14 @@ pip install -r requirements.txt
 ```
 
 # Usage 
+
 ```
 python main.py [categorie] [thread workers]
 ```
+
+## Example
+
+```
+python main.py hair 2
+```
+
