@@ -88,5 +88,6 @@ async def main(categorie, executor):
     await asyncio.gather(*tasks)
 
 
-with ProcessPoolExecutor(max_workers=int(sys.argv[2])) as executor:
-    asyncio.run(main(sys.argv[1], executor))
+if __name__ == "__main__":
+    with ProcessPoolExecutor(max_workers=2) as executor:
+        asyncio.run(main(sys.argv[1], executor))
