@@ -7,8 +7,10 @@ from concurrent.futures import ProcessPoolExecutor
 
 import aiohttp
 import aiofiles
+from progressbar import ProgressBar
 
 from src.utils.parsing import fetch_images_urls
+
 
 async def get_html_source(categorie, index):
     headers = {
@@ -37,7 +39,6 @@ async def get_image(url, executor):
 
 def make_image_path():
     cwd = os.getcwd()
-    print(cwd)
     dir_path = f"{cwd}/output"
     folder_exist = os.path.exists(dir_path)
 
