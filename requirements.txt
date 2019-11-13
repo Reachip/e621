@@ -13,7 +13,6 @@ lxml==4.4.1
 mccabe==0.6.1
 multidict==4.5.2
 pathlib==1.0.1
-progressbar==2.5
 pycodestyle==2.5.0
 pylint==2.4.3
 six==1.13.0
