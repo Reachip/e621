@@ -1,7 +1,6 @@
 import asyncio
 import os
-import time
-import sys
+import argparse
 import logging
 from uuid import uuid4
 from concurrent.futures import ProcessPoolExecutor
@@ -9,12 +8,7 @@ from concurrent.futures import ProcessPoolExecutor
 import aiohttp
 import aiofiles
 
-from utils.parsing import fetch_images_urls
-
-logging.basicConfig(
-    filename="log", format="%(threadName)s %(asctime)s %(message)s", level=logging.DEBUG
-)
-
+from src.utils.parsing import fetch_images_urls
 
 async def get_html_source(categorie, index):
     headers = {
@@ -33,16 +27,18 @@ async def get_image(url, executor):
         "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36"
     }
 
-    async with aiohttp.ClientSession(headers=headers) as session:
+    async with aiohttp.ClientSession(
+        headers=headers, connector=aiohttp.TCPConnector(ssl=False)
+    ) as session:
         async with session.get(url) as resp:
-            logging.info(f"[{url}] DOWNLOADED")
+            logging.info(f"[{url}] downloaded")
             await write_image(resp, executor)
 
 
 def make_image_path():
     cwd = os.getcwd()
-
-    dir_path = f"{cwd}/e621"
+    print(cwd)
+    dir_path = f"{cwd}/output"
     folder_exist = os.path.exists(dir_path)
 
     if not folder_exist:
@@ -63,7 +59,7 @@ async def write_image(http_response, executor):
             chunk = await http_response.content.read(10)
 
             if not chunk:
-                logging.info(f"[{image_path}] WRITTEN")
+                logging.info(f"[{image_path}] written")
                 break
 
             await f.write(chunk)
@@ -81,13 +77,19 @@ async def get_image_from_categorie(categorie, index, executor):
 
 
 async def main(categorie, executor):
-    logging.info("SCRIPT RUNNING")
     tasks = (
         get_image_from_categorie(categorie, index, executor) for index in range(750)
     )
     await asyncio.gather(*tasks)
 
 
-if __name__ == "__main__":
-    with ProcessPoolExecutor(max_workers=2) as executor:
-        asyncio.run(main(sys.argv[1], executor))
+parser = argparse.ArgumentParser(description="Fast E621 image downloader")
+parser.add_argument("categorie", type=str, help="image catégorie")
+parser.add_argument("--log", type=str, help="display logs into stdout")
+args = parser.parse_args()
+
+with ProcessPoolExecutor(max_workers=2) as executor:
+    if args.log == "yes":
+        logging.basicConfig(level=logging.DEBUG)
+
+    asyncio.run(main(args.categorie, executor))
