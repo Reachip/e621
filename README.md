@@ -5,18 +5,17 @@ A fast e621 image downloader made for fun.
 # Installation
 
 ```
-# You may create a virtual env
-pip install -r requirements.txt
+sudo python3 setup.py install
 ```
 
 # Usage
 
 ```
-python main.py [categorie]
+E621 [-h] [--log LOG] categorie
 ```
 
-## Example
+# Example
 
 ```
-python main.py hair
+E621 hair --log yes
 ```
