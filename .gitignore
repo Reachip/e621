@@ -2,6 +2,7 @@ src/__pycache__/
 src/utils/__pycache__/
 log
 venv/
+E621.egg-info
 dist/
 build/
 main.egg-info
