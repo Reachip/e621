@@ -85,7 +85,7 @@ async def main(categorie, executor):
 
 
 parser = argparse.ArgumentParser(description="Fast E621 image downloader")
-parser.add_argument("categorie", type=str, help="image catégorie")
+parser.add_argument("categorie", type=str, help="image categorie")
 parser.add_argument("--log", type=str, help="display logs into stdout")
 args = parser.parse_args()
 
