@@ -19,7 +19,7 @@ async def get_html_source(categorie, index):
     url = f"https://e621.net/post/index/{index}/{categorie}"
 
     async with aiohttp.ClientSession(
-        headers=headers, connector=aiohttp.TCPConnector(ssl=False)
+        headers=headers, connector=aiohttp.TCPConnector(ssl=False, limit=0)
     ) as session:
         async with session.get(url) as response:
             return await response.text()
@@ -31,7 +31,7 @@ async def get_image(url, executor):
     }
 
     async with aiohttp.ClientSession(
-        headers=headers, connector=aiohttp.TCPConnector(ssl=False)
+        headers=headers, connector=aiohttp.TCPConnector(ssl=False, limit=0)
     ) as session:
         async with session.get(url) as resp:
             logging.info(f"[{url}] downloaded")
