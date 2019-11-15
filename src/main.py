@@ -7,7 +7,6 @@ from concurrent.futures import ProcessPoolExecutor
 
 import aiohttp
 import aiofiles
-from progressbar import ProgressBar
 
 from src.utils.parsing import fetch_images_urls
 
