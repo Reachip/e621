@@ -2,13 +2,14 @@ import asyncio
 import os
 import argparse
 import logging
+import time
 from uuid import uuid4
 from concurrent.futures import ProcessPoolExecutor
 
 import aiohttp
 import aiofiles
 
-from src.utils.parsing import fetch_images_urls
+from utils.parsing import fetch_images_urls
 
 
 async def get_html_source(categorie, index):
@@ -75,8 +76,7 @@ async def get_image_from_categorie(categorie, index, executor):
 
     for image_url in image_urls:
         await get_image(image_url, executor)
-        await asyncio.sleep(1)
-
+        time.sleep(0.3)
 
 async def main(categorie, executor):
     tasks = (
