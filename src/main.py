@@ -18,7 +18,9 @@ async def get_html_source(categorie, index):
 
     url = f"https://e621.net/post/index/{index}/{categorie}"
 
-    async with aiohttp.ClientSession(headers=headers) as session:
+    async with aiohttp.ClientSession(
+        headers=headers, connector=aiohttp.TCPConnector(ssl=False)
+    ) as session:
         async with session.get(url) as response:
             return await response.text()
 
