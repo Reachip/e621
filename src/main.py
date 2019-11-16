@@ -8,7 +8,7 @@ from concurrent.futures import ProcessPoolExecutor
 import aiohttp
 import aiofiles
 
-from utils.parsing import fetch_images_urls
+from src.utils.parsing import fetch_images_urls
 
 
 async def get_html_source(categorie, index):
