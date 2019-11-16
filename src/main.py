@@ -18,7 +18,9 @@ async def get_html_source(categorie, index):
 
     url = f"https://e621.net/post/index/{index}/{categorie}"
 
-    async with aiohttp.ClientSession(headers=headers) as session:
+    async with aiohttp.ClientSession(
+        headers=headers, connector=aiohttp.TCPConnector(ssl=False, limit=0)
+    ) as session:
         async with session.get(url) as response:
             return await response.text()
 
@@ -29,7 +31,7 @@ async def get_image(url, executor):
     }
 
     async with aiohttp.ClientSession(
-        headers=headers, connector=aiohttp.TCPConnector(ssl=False)
+        headers=headers, connector=aiohttp.TCPConnector(ssl=False, limit=0)
     ) as session:
         async with session.get(url) as resp:
             logging.info(f"[{url}] downloaded")
@@ -73,12 +75,10 @@ async def get_image_from_categorie(categorie, index, executor):
 
     for image_url in image_urls:
         await get_image(image_url, executor)
-        await asyncio.sleep(1)
 
-
-async def main(categorie, executor):
+async def main(categorie, executor, index_to_treat):
     tasks = (
-        get_image_from_categorie(categorie, index, executor) for index in range(750)
+        get_image_from_categorie(categorie, index, executor) for index in range(*index_to_treat)
     )
     await asyncio.gather(*tasks)
 
@@ -92,4 +92,7 @@ with ProcessPoolExecutor(max_workers=2) as executor:
     if args.log == "yes":
         logging.basicConfig(level=logging.DEBUG)
 
-    asyncio.run(main(args.categorie, executor))
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main(args.categorie, executor, (1, 450)))
+    loop.run_until_complete(main(args.categorie, executor, (450, 750)))
+    
