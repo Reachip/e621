@@ -76,9 +76,11 @@ async def get_image_from_categorie(categorie, index, executor):
     for image_url in image_urls:
         await get_image(image_url, executor)
 
+
 async def main(categorie, executor, index_to_treat):
     tasks = (
-        get_image_from_categorie(categorie, index, executor) for index in range(*index_to_treat)
+        get_image_from_categorie(categorie, index, executor)
+        for index in range(*index_to_treat)
     )
     await asyncio.gather(*tasks)
 
@@ -88,11 +90,11 @@ parser.add_argument("categorie", type=str, help="image categorie")
 parser.add_argument("--log", type=str, help="display logs into stdout")
 args = parser.parse_args()
 
-with ProcessPoolExecutor(max_workers=2) as executor:
-    if args.log == "yes":
-        logging.basicConfig(level=logging.DEBUG)
+if __name__ == "__main__":
+    with ProcessPoolExecutor(max_workers=2) as executor:
+        if args.log == "yes":
+            logging.basicConfig(level=logging.DEBUG)
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main(args.categorie, executor, (1, 450)))
-    loop.run_until_complete(main(args.categorie, executor, (450, 750)))
-    
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(main(args.categorie, executor, (1, 450)))
+        loop.run_until_complete(main(args.categorie, executor, (450, 750)))
