@@ -1,5 +1,6 @@
 src/__pycache__/
 src/utils/__pycache__/
+__pycache__/
 log
 venv/
 E621.egg-info
