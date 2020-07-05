@@ -1,21 +1,15 @@
 # Description 
 
-A fast e621 image downloader made for fun.
-
-# Installation
-
-```
-sudo python3 setup.py install
-```
+A fast async e621 image downloader made for fun.
 
 # Usage
 
 ```
-E621 [-h] [--log LOG] categorie
+python -m e621 [-h] categorie pages_to_download
 ```
 
 # Example
 
 ```
-E621 hair --log yes
+python -m e621 hair 700
 ```
